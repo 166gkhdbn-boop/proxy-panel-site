@@ -22,6 +22,11 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; }
+/* SVG icons: align with text */
+svg { vertical-align: -3px; flex-shrink: 0; }
+.nav-item svg, .btn svg, .logo-icon svg { vertical-align: middle; }
+.proto-ico svg, .activity-ico svg, .uavatar svg { width: 20px; height: 20px; }
+.logo-icon svg { width: 24px; height: 24px; }
 body {
   font-family: 'Vazirmatn', system-ui, sans-serif;
   color: var(--text);
@@ -284,15 +289,15 @@ input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px
   <!-- ===== Sidebar ===== -->
   <aside class="sidebar" id="sidebar">
     <div class="logo">
-      <div class="logo-icon">🚀</div>
+      <div class="logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c3.5 0 6.5 2.5 7.5 6 .3 1.1.5 2.3.5 3.5 0 1.5-.5 3-1.5 4l-2.5 3c-.6.7-1.6.7-2.2 0L11 15.5H8.5c-1 0-2-.5-2.5-1.5L4 10c-.3-.6 0-1.4.6-1.7C7 7 9.5 2 12 2z"/><circle cx="12" cy="9" r="2" fill="#0a0a12"/></svg></div>
       <div><b>پنل پروکسی</b><span>Proxy Panel</span></div>
     </div>
     <div class="nav-label">مدیریت</div>
-    <button class="nav-item active" data-tab="dashboard"><span class="ico">🏠</span> داشبورد</button>
-    <button class="nav-item" data-tab="users"><span class="ico">👥</span> کاربران</button>
-    <button class="nav-item" data-tab="protocols"><span class="ico">🔌</span> پروتکل‌ها</button>
+    <button class="nav-item active" data-tab="dashboard"><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></span> داشبورد</button>
+    <button class="nav-item" data-tab="users"><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> کاربران</button>
+    <button class="nav-item" data-tab="protocols"><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7V2M15 7V2M6 7h12v4a6 6 0 0 1-12 0V7z"/><path d="M12 17v5"/></svg></span> پروتکل‌ها</button>
     <div class="nav-label">سیستم</div>
-    <button class="nav-item" data-tab="settings"><span class="ico">⚙️</span> تنظیمات</button>
+    <button class="nav-item" data-tab="settings"><span class="ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span> تنظیمات</button>
     <div class="sidebar-foot">
       <div class="project-badge">
         <div class="dot"></div>
@@ -305,13 +310,13 @@ input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px
   <!-- ===== Main ===== -->
   <div class="main">
     <div class="topbar">
-      <button class="icon-btn menu-btn" id="menuBtn">☰</button>
+      <button class="icon-btn menu-btn" id="menuBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
       <div class="greet">
-        <h1 id="greetTitle">سلام، آوا 👋</h1>
+        <h1 id="greetTitle">سلام، آوا </h1>
         <p>این چیزیه که امروز توی پروکسی‌ت می‌گذره.</p>
       </div>
       <div class="topbar-actions">
-        <div class="search">🔍 <span>جستجو...</span></div>
+        <div class="search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg> <span>جستجو...</span></div>
         <button class="icon-btn" onclick="location.reload()" title="رفرش">↻</button>
         <div class="avatar-btn">آ</div>
       </div>
@@ -328,11 +333,11 @@ input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px
       <div class="dash-grid">
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-            <h2>📡 وضعیت سرویس</h2>
+            <h2><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5M19.1 4.9C23 8.8 23 15.1 19.1 19"/><circle cx="12" cy="12" r="2"/></svg> وضعیت سرویس</h2>
             <div class="chart-tabs"><button class="on">زنده</button></div>
           </div>
           <p class="sub">تست لحظه‌ای پروتکل‌ها از همین پنل</p>
-          <div class="test-result" id="dash-test">برای تست، به تب پروتکل‌ها برو 👈</div>
+          <div class="test-result" id="dash-test">برای تست، به تب پروتکل‌ها برو <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></div>
           <div class="test-row">
             <button class="btn btn-ghost btn-sm" onclick="quickTest('vless')">VLESS</button>
             <button class="btn btn-ghost btn-sm" onclick="quickTest('trojan')">Trojan</button>
@@ -341,22 +346,22 @@ input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px
           </div>
         </div>
         <div class="card">
-          <h2>⚡ فعالیت اخیر</h2>
+          <h2><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> فعالیت اخیر</h2>
           <p class="sub">آخرین رویدادهای پنل</p>
           <div id="activity-feed">
-            <div class="activity-item"><div class="activity-ico">🚀</div><div><b>پنل راه‌اندازی شد</b><br><small>Supabase Edge Functions · eu-west-1</small></div></div>
-            <div class="activity-item"><div class="activity-ico">🔌</div><div><b>XHTTP فعال شد</b><br><small>ترنسپورت HTTP خالص — تست موفق</small></div></div>
-            <div class="activity-item"><div class="activity-ico">👤</div><div><b>کاربر اصلی ساخته شد</b><br><small id="activity-user">در حال بارگذاری...</small></div></div>
+            <div class="activity-item"><div class="activity-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c3.5 0 6.5 2.5 7.5 6 .3 1.1.5 2.3.5 3.5 0 1.5-.5 3-1.5 4l-2.5 3c-.6.7-1.6.7-2.2 0L11 15.5H8.5c-1 0-2-.5-2.5-1.5L4 10c-.3-.6 0-1.4.6-1.7C7 7 9.5 2 12 2z"/><circle cx="12" cy="9" r="2" fill="#0a0a12"/></svg></div><div><b>پنل راه‌اندازی شد</b><br><small>Supabase Edge Functions · eu-west-1</small></div></div>
+            <div class="activity-item"><div class="activity-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7V2M15 7V2M6 7h12v4a6 6 0 0 1-12 0V7z"/><path d="M12 17v5"/></svg></div><div><b>XHTTP فعال شد</b><br><small>ترنسپورت HTTP خالص — تست موفق</small></div></div>
+            <div class="activity-item"><div class="activity-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div><b>کاربر اصلی ساخته شد</b><br><small id="activity-user">در حال بارگذاری...</small></div></div>
           </div>
         </div>
       </div>
       <div class="card">
-        <h2>📱 لینک اشتراک کلی</h2>
+        <h2><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg> لینک اشتراک کلی</h2>
         <p class="sub">این لینک همه کانفیگ‌های فعال رو داره — توی v2rayNG وارد کن</p>
         <div class="sub-box" id="global-sub">در حال بارگذاری...</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn btn-ghost btn-sm" onclick="copyText('global-sub')">📋 کپی</button>
-          <button class="btn btn-ghost btn-sm" onclick="showQR('global-sub')">📱 QR کد</button>
+          <button class="btn btn-ghost btn-sm" onclick="copyText('global-sub')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg> کپی</button>
+          <button class="btn btn-ghost btn-sm" onclick="showQR('global-sub')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg> QR کد</button>
         </div>
         <div class="qr-wrap" id="global-qr" style="display:none"></div>
       </div>
@@ -366,10 +371,10 @@ input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px
     <div class="tab-page" id="page-users">
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:10px">
-          <div><h2>👥 کاربران</h2><p class="sub" style="margin:0">مدیریت کاربران و سابسکریپشن‌ها</p></div>
+          <div><h2><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg> کاربران</h2><p class="sub" style="margin:0">مدیریت کاربران و سابسکریپشن‌ها</p></div>
           <button class="btn btn-primary btn-sm" onclick="openModal('add-user-modal')">+ کاربر جدید</button>
         </div>
-        <div class="tbl-tools"><input class="tbl-search" id="user-search" placeholder="🔍 جستجوی کاربران..." oninput="filterUsers()"></div>
+        <div class="tbl-tools"><input class="tbl-search" id="user-search" placeholder="<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg> جستجوی کاربران..." oninput="filterUsers()"></div>
         <div style="overflow-x:auto">
         <table>
           <thead><tr><th>کاربر</th><th>UUID</th><th>وضعیت</th><th>عملیات</th></tr></thead>
@@ -382,12 +387,12 @@ input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px
     <!-- ===== Protocols ===== -->
     <div class="tab-page" id="page-protocols">
       <div class="card">
-        <h2>🔌 پروتکل‌ها</h2>
+        <h2><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7V2M15 7V2M6 7h12v4a6 6 0 0 1-12 0V7z"/><path d="M12 17v5"/></svg> پروتکل‌ها</h2>
         <p class="sub">فقط پروتکل‌هایی که روی Edge Functions کار می‌کنن قابل فعال‌سازی‌ان. MTProto و Shadowsocks نیاز به TCP خام دارن — معماریاً غیرممکنه.</p>
         <div class="proto-grid" id="protocols-grid"></div>
       </div>
       <div class="card">
-        <h2>🧪 تست پروتکل‌ها</h2>
+        <h2><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6L4.5 19a2 2 0 0 0 1.8 3h11.4a2 2 0 0 0 1.8-3L14 9V3"/><path d="M7 15h10"/></svg> تست پروتکل‌ها</h2>
         <p class="sub">وضعیت واقعی هر پروتکل رو از سرور بپرس</p>
         <div class="test-row">
           <button class="btn btn-ghost btn-sm" onclick="testProto('vless')">تست VLESS</button>
@@ -399,23 +404,23 @@ input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px
           <button class="btn btn-ghost btn-sm" onclick="testProto('mtproto')">تست MTProto</button>
           <button class="btn btn-ghost btn-sm" onclick="testProto('httpupgrade')">تست HTTPUpgrade</button>
         </div>
-        <div class="test-result" id="proto-test-results">برای تست هر پروتکل، دکمه‌اش رو بزن 👆</div>
+        <div class="test-result" id="proto-test-results">برای تست هر پروتکل، دکمه‌اش رو بزن <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></div>
       </div>
     </div>
 
     <!-- ===== Settings ===== -->
     <div class="tab-page" id="page-settings">
       <div class="card">
-        <h2>⚙️ تنظیمات پنل</h2>
+        <h2><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> تنظیمات پنل</h2>
         <p class="sub">تنظیمات کلی پنل مدیریت</p>
         <div class="form-group">
           <label>پسورد پنل</label>
           <input type="password" id="setting-password" placeholder="پسورد جدید (خالی = بدون تغییر)">
         </div>
-        <button class="btn btn-primary" onclick="saveSettings()">💾 ذخیره</button>
+        <button class="btn btn-primary" onclick="saveSettings()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg> ذخیره</button>
       </div>
       <div class="card">
-        <h2>ℹ️ اطلاعات سرور</h2>
+        <h2>ℹ اطلاعات سرور</h2>
         <p class="sub">مشخصات زیرساخت</p>
         <div id="server-info" style="font-size:13.5px;color:var(--text-dim);line-height:2.2"></div>
       </div>
@@ -426,7 +431,7 @@ input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px
 <!-- Add User Modal -->
 <div class="modal" id="add-user-modal">
   <div class="modal-box">
-    <h3>👤 کاربر جدید</h3>
+    <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> کاربر جدید</h3>
     <div class="form-group">
       <label>نام</label>
       <input type="text" id="new-user-name" placeholder="مثلاً: گوشی آوا">
@@ -501,7 +506,7 @@ document.getElementById('scrim').addEventListener('click', () => {
 (function() {
   const h = new Date().getHours();
   const g = h < 12 ? 'صبح بخیر' : h < 18 ? 'ظهر بخیر' : 'شب بخیر';
-  document.getElementById('greetTitle').textContent = g + '، آوا 👋';
+  document.getElementById('greetTitle').textContent = g + '، آوا ';
 })();
 
 // Modal
@@ -561,9 +566,9 @@ function renderUsers() {
       <td class="mono">${esc(u.uuid.slice(0, 13))}...</td>
       <td><span class="badge ${u.enabled ? 'on' : 'off'}">${u.enabled ? 'فعال' : 'غیرفعال'}</span></td>
       <td><div class="row-actions">
-        <button class="btn btn-ghost btn-sm" onclick="showUser('${u.id}')">📡 کانفیگ</button>
+        <button class="btn btn-ghost btn-sm" onclick="showUser('${u.id}')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5M19.1 4.9C23 8.8 23 15.1 19.1 19"/><circle cx="12" cy="12" r="2"/></svg> کانفیگ</button>
         <button class="btn btn-ghost btn-sm" onclick="toggleUser('${u.id}', ${!u.enabled})">${u.enabled ? '⏸' : '▶'}</button>
-        <button class="btn btn-danger btn-sm btn-icon" onclick="deleteUser('${u.id}')">🗑</button>
+        <button class="btn btn-danger btn-sm btn-icon" onclick="deleteUser('${u.id}')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
       </div></td>
     </tr>`).join('');
 }
@@ -573,34 +578,34 @@ async function createUser() {
   const name = document.getElementById('new-user-name').value.trim();
   if (!name) { toast('نام رو وارد کن', 'error'); return; }
   const res = await api('/api/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name }) }).then(r => r.json());
-  if (res.user) { toast('کاربر ساخته شد! 🎉'); closeModal('add-user-modal'); document.getElementById('new-user-name').value = ''; loadDashboard(); }
+  if (res.user) { toast('کاربر ساخته شد! <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'); closeModal('add-user-modal'); document.getElementById('new-user-name').value = ''; loadDashboard(); }
   else toast('خطا', 'error');
 }
 async function toggleUser(id, enabled) {
   await api('/api/users/' + id, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ enabled }) });
-  toast(enabled ? 'فعال شد ✅' : 'غیرفعال شد ⏸'); loadDashboard();
+  toast(enabled ? 'فعال شد <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>' : 'غیرفعال شد ⏸'); loadDashboard();
 }
 async function deleteUser(id) {
   if (!confirm('مطمئنی حذف بشه؟')) return;
   await api('/api/users/' + id, { method: 'DELETE' });
-  toast('حذف شد 🗑'); loadDashboard();
+  toast('حذف شد <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>'); loadDashboard();
 }
 async function showUser(id) {
   const res = await api('/api/sub/' + id).then(r => r.json());
   const u = ALL_USERS.find(x => x.id === id);
-  document.getElementById('user-modal-title').textContent = '📡 ' + (u ? u.name : 'کاربر');
+  document.getElementById('user-modal-title').textContent = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5M19.1 4.9C23 8.8 23 15.1 19.1 19"/><circle cx="12" cy="12" r="2"/></svg> ' + (u ? u.name : 'کاربر');
   const links = res.links || [];
   document.getElementById('user-modal-body').innerHTML = `
     <div class="form-group"><label>لینک‌ها (${links.length})</label>
     ${links.map((l, i) => `<div class="sub-box" id="user-link-${i}">${esc(l)}</div>
       <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">
-        <button class="btn btn-ghost btn-sm" onclick="copyText('user-link-${i}')">📋 کپی</button>
-        <button class="btn btn-ghost btn-sm" onclick="showQR('user-link-${i}')">📱 QR</button>
+        <button class="btn btn-ghost btn-sm" onclick="copyText('user-link-${i}')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg> کپی</button>
+        <button class="btn btn-ghost btn-sm" onclick="showQR('user-link-${i}')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg> QR</button>
       </div>
       <div class="qr-wrap" id="user-qr-${i}" style="display:none"></div>`).join('')}
     </div>
     <div class="form-group"><label>Subscription (base64)</label><div class="sub-box" id="user-sub">${esc(res.subscription || '')}</div></div>
-    <button class="btn btn-ghost btn-sm" onclick="copyText('user-sub')">📋 کپی ساب</button>`;
+    <button class="btn btn-ghost btn-sm" onclick="copyText('user-sub')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg> کپی ساب</button>`;
   // fix QR wrap ids for showQR
   const origShowQR = window.showQR;
   openModal('user-modal');
@@ -620,14 +625,14 @@ showQR = function(id) {
 
 // Protocols
 const PROTO_INFO = [
-  { key: 'vless', name: 'VLESS', ico: '⚡', color: '#a78bfa', desc: 'مدرن، سبک و امن — روی WebSocket + TLS. انتخاب اول.', works: true },
-  { key: 'trojan', name: 'Trojan', ico: '🛡️', color: '#22d3ee', desc: 'ترافیک شبیه HTTPS واقعی — مقاوم در برابر شناسایی.', works: true },
-  { key: 'xhttp', name: 'XHTTP', ico: '📦', color: '#fbbf24', desc: 'ترنسپورت HTTP خالص — ضد اختلال و خفگی آپلود.', works: true },
-  { key: 'vmess', name: 'VMess', ico: '📻', color: '#9a9ab0', desc: 'پروتکل قدیمی‌تر — سنگین‌تر از VLESS.', works: false, reason: 'منسوخ' },
-  { key: 'ss', name: 'Shadowsocks', ico: '👻', color: '#9a9ab0', desc: 'نیاز به TCP خام ورودی دارد.', works: false, reason: 'غیرممکن روی Edge' },
-  { key: 'mtproto', name: 'MTProto', ico: '✈️', color: '#9a9ab0', desc: 'پروتکل تلگرام — نیاز به TCP خام.', works: false, reason: 'غیرممکن روی Edge' },
-  { key: 'wireguard', name: 'WireGuard', ico: '🔒', color: '#9a9ab0', desc: 'نیاز به سوکت UDP دارد.', works: false, reason: 'غیرممکن روی Edge' },
-  { key: 'httpupgrade', name: 'HTTPUpgrade', ico: '🔄', color: '#9a9ab0', desc: 'نیاز به hijack کردن کانکشن دارد.', works: false, reason: 'پشتیبانی نمی‌شود' },
+  { key: 'vless', name: 'VLESS', ico: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>', color: '#a78bfa', desc: 'مدرن، سبک و امن — روی WebSocket + TLS. انتخاب اول.', works: true },
+  { key: 'trojan', name: 'Trojan', ico: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>', color: '#22d3ee', desc: 'ترافیک شبیه HTTPS واقعی — مقاوم در برابر شناسایی.', works: true },
+  { key: 'xhttp', name: 'XHTTP', ico: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4L7.55 4.24M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg>', color: '#fbbf24', desc: 'ترنسپورت HTTP خالص — ضد اختلال و خفگی آپلود.', works: true },
+  { key: 'vmess', name: 'VMess', ico: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M4.93 19.07a10 10 0 0 1 0-14.14M7.76 16.24a6 6 0 0 1 0-8.49M16.24 7.76a6 6 0 0 1 0 8.49M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>', color: '#9a9ab0', desc: 'پروتکل قدیمی‌تر — سنگین‌تر از VLESS.', works: false, reason: 'منسوخ' },
+  { key: 'ss', name: 'Shadowsocks', ico: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>', color: '#9a9ab0', desc: 'نیاز به TCP خام ورودی دارد.', works: false, reason: 'غیرممکن روی Edge' },
+  { key: 'mtproto', name: 'MTProto', ico: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>', color: '#9a9ab0', desc: 'پروتکل تلگرام — نیاز به TCP خام.', works: false, reason: 'غیرممکن روی Edge' },
+  { key: 'wireguard', name: 'WireGuard', ico: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>', color: '#9a9ab0', desc: 'نیاز به سوکت UDP دارد.', works: false, reason: 'غیرممکن روی Edge' },
+  { key: 'httpupgrade', name: 'HTTPUpgrade', ico: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>', color: '#9a9ab0', desc: 'نیاز به hijack کردن کانکشن دارد.', works: false, reason: 'پشتیبانی نمی‌شود' },
 ];
 async function loadProtocols() {
   const settingsRes = await api('/api/settings').then(r => r.json());
@@ -648,38 +653,38 @@ async function loadProtocols() {
 }
 async function toggleProto(key, enabled) {
   await api('/api/settings', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key: key + '_enabled', value: String(enabled) }) });
-  toast(key + (enabled ? ' فعال شد ✅' : ' غیرفعال شد ⏸')); loadDashboard();
+  toast(key + (enabled ? ' فعال شد <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>' : ' غیرفعال شد ⏸')); loadDashboard();
 }
 async function testProto(p) {
   const box = document.getElementById('proto-test-results');
   box.innerHTML = '⏳ در حال تست ' + p + '...';
   try {
     const res = await api('/api/test/' + p).then(r => r.json());
-    box.innerHTML = (res.ok ? '✅ ' : '❌ ') + '<b>' + p + '</b>: ' + esc(res.message || '');
-  } catch (e) { box.innerHTML = '❌ خطا در تست'; }
+    box.innerHTML = (res.ok ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> ' : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg> ') + '<b>' + p + '</b>: ' + esc(res.message || '');
+  } catch (e) { box.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg> خطا در تست'; }
 }
 async function quickTest(p) {
   const box = document.getElementById('dash-test');
   box.innerHTML = '⏳ در حال تست ' + p + '...';
   try {
     const res = await api('/api/test/' + p).then(r => r.json());
-    box.innerHTML = (res.ok ? '✅ ' : '❌ ') + '<b>' + p + '</b>: ' + esc(res.message || '');
-  } catch (e) { box.innerHTML = '❌ خطا در تست'; }
+    box.innerHTML = (res.ok ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg> ' : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg> ') + '<b>' + p + '</b>: ' + esc(res.message || '');
+  } catch (e) { box.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg> خطا در تست'; }
 }
 
 // Settings
 async function saveSettings() {
   const newPw = document.getElementById('setting-password').value;
-  if (newPw) toast('تغییر پسورد نیاز به تنظیم دستی داره 🔧', 'error');
-  else toast('ذخیره شد ✅');
+  if (newPw) toast('تغییر پسورد نیاز به تنظیم دستی داره <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>', 'error');
+  else toast('ذخیره شد <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>');
 }
 async function loadServerInfo() {
   const res = await api('/api/info').then(r => r.json()).catch(() => ({}));
   document.getElementById('server-info').innerHTML =
-    '🌐 هاست: <span class="mono">' + esc(res.host || '-') + '</span><br>' +
-    '📦 پلتفرم: Supabase Edge Functions<br>' +
-    '🗄 دیتابیس: Postgres <span class="mono">panel_users</span> · <span class="mono">panel_settings</span><br>' +
-    '🌍 ریجن: West EU (Ireland) · eu-west-1';
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> هاست: <span class="mono">' + esc(res.host || '-') + '</span><br>' +
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4L7.55 4.24M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg> پلتفرم: Supabase Edge Functions<br>' +
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg> دیتابیس: Postgres <span class="mono">panel_users</span> · <span class="mono">panel_settings</span><br>' +
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> ریجن: West EU (Ireland) · eu-west-1';
 }
 
 // Init
