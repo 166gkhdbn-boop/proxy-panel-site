@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پنل مدیریت پروکسی</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+<style>
+:root {
+  --bg: #0a0a12;
+  --bg2: #12121e;
+  --card: rgba(255,255,255,0.03);
+  --card-border: rgba(255,255,255,0.08);
+  --primary: #7c3aed;
+  --primary2: #4f46e5;
+  --accent: #22d3ee;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --text: #f1f1f5;
+  --text-dim: #8b8b9e;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Vazirmatn', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  background-image: 
+    radial-gradient(600px 400px at 20% 0%, rgba(124,58,237,0.15), transparent),
+    radial-gradient(500px 400px at 90% 100%, rgba(34,211,238,0.08), transparent);
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 24px 16px 60px; }
+
+/* Header */
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 32px; flex-wrap: wrap; gap: 16px;
+}
+.logo { display: flex; align-items: center; gap: 12px; }
+.logo-icon {
+  width: 48px; height: 48px; border-radius: 14px;
+  background: linear-gradient(135deg, var(--primary), var(--primary2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; box-shadow: 0 8px 24px rgba(124,58,237,0.4);
+}
+.logo h1 { font-size: 22px; font-weight: 800; }
+.logo p { font-size: 12px; color: var(--text-dim); }
+.status-badge {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--card); border: 1px solid var(--card-border);
+  padding: 8px 16px; border-radius: 99px; font-size: 13px;
+}
+.pulse { width: 10px; height: 10px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* Tabs */
+.tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+.tab {
+  padding: 10px 20px; border-radius: 12px; cursor: pointer;
+  background: transparent; border: 1px solid transparent;
+  color: var(--text-dim); font-family: inherit; font-size: 14px; font-weight: 600;
+  transition: all 0.2s;
+}
+.tab:hover { color: var(--text); background: var(--card); }
+.tab.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary2));
+  color: white; box-shadow: 0 4px 16px rgba(124,58,237,0.35);
+}
+.tab-content { display: none; animation: fadeIn 0.3s; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* Cards & Stats */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.stat-card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: 16px; padding: 20px; backdrop-filter: blur(10px);
+  transition: transform 0.2s;
+}
+.stat-card:hover { transform: translateY(-2px); }
+.stat-card .num { font-size: 32px; font-weight: 800; margin-bottom: 4px; }
+.stat-card .lbl { font-size: 13px; color: var(--text-dim); }
+.stat-card.vless .num { color: var(--accent); }
+.stat-card.trojan .num { color: var(--primary); }
+.stat-card.users .num { color: var(--success); }
+
+.card {
+  background: var(--card); border: 1px solid var(--card-border);
+  border-radius: 16px; padding: 24px; margin-bottom: 16px;
+  backdrop-filter: blur(10px);
+}
+.card h2 { font-size: 17px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+
+/* Users */
+.user-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 0; border-bottom: 1px solid var(--card-border); gap: 12px; flex-wrap: wrap;
+}
+.user-row:last-child { border-bottom: none; }
+.user-info { display: flex; align-items: center; gap: 12px; }
+.avatar {
+  width: 42px; height: 42px; border-radius: 12px;
+  background: linear-gradient(135deg, #334155, #1e293b);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 700; color: var(--accent);
+}
+.user-info .name { font-weight: 700; font-size: 15px; }
+.user-info .meta { font-size: 12px; color: var(--text-dim); font-family: monospace; direction: ltr; }
+.user-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.badge {
+  font-size: 11px; padding: 4px 10px; border-radius: 99px; font-weight: 600;
+}
+.badge.on { background: rgba(34,197,94,0.15); color: var(--success); }
+.badge.off { background: rgba(239,68,68,0.15); color: var(--danger); }
+
+/* Buttons */
+.btn {
+  padding: 9px 18px; border-radius: 10px; border: none; cursor: pointer;
+  font-family: inherit; font-size: 13px; font-weight: 600;
+  transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary2)); color: white; }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,58,237,0.4); }
+.btn-ghost { background: var(--card); border: 1px solid var(--card-border); color: var(--text); }
+.btn-ghost:hover { background: rgba(255,255,255,0.06); }
+.btn-danger { background: rgba(239,68,68,0.12); color: var(--danger); border: 1px solid rgba(239,68,68,0.2); }
+.btn-danger:hover { background: rgba(239,68,68,0.2); }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+
+/* Forms */
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 13px; color: var(--text-dim); margin-bottom: 6px; }
+input[type="text"], input[type="password"] {
+  width: 100%; padding: 12px 14px; border-radius: 10px;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--card-border);
+  color: var(--text); font-family: inherit; font-size: 14px;
+}
+input:focus { outline: none; border-color: var(--primary); }
+
+/* Toggle */
+.toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--card-border); }
+.toggle-row:last-child { border: none; }
+.toggle-info .t-name { font-weight: 700; font-size: 15px; }
+.toggle-info .t-desc { font-size: 12px; color: var(--text-dim); }
+.switch { position: relative; width: 52px; height: 28px; cursor: pointer; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+  position: absolute; inset: 0; border-radius: 99px;
+  background: rgba(255,255,255,0.1); transition: 0.3s;
+}
+.slider:before {
+  content: ""; position: absolute; width: 20px; height: 20px; border-radius: 50%;
+  top: 4px; right: 4px; background: white; transition: 0.3s;
+}
+.switch input:checked + .slider { background: linear-gradient(135deg, var(--primary), var(--primary2)); }
+.switch input:checked + .slider:before { transform: translateX(-24px); }
+
+/* Subscription */
+.sub-box {
+  background: rgba(0,0,0,0.3); border: 1px dashed var(--card-border);
+  border-radius: 12px; padding: 16px; margin: 12px 0;
+  font-family: monospace; font-size: 12px; word-break: break-all;
+  direction: ltr; text-align: left; max-height: 120px; overflow: auto;
+}
+.qr-wrap { text-align: center; margin: 16px 0; }
+.qr-wrap img { border-radius: 12px; border: 4px solid white; }
+
+/* Modal */
+.modal {
+  display: none; position: fixed; inset: 0; z-index: 100;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+  align-items: center; justify-content: center; padding: 16px;
+}
+.modal.open { display: flex; }
+.modal-box {
+  background: var(--bg2); border: 1px solid var(--card-border);
+  border-radius: 20px; padding: 28px; max-width: 480px; width: 100%;
+  animation: popIn 0.25s;
+}
+@keyframes popIn { from { transform: scale(0.95); opacity: 0; } to { transform: none; opacity: 1; } }
+.modal-box h3 { margin-bottom: 20px; font-size: 18px; }
+.modal-actions { display: flex; gap: 10px; justify-content: flex-start; margin-top: 20px; }
+
+.toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 200;
+  background: var(--bg2); border: 1px solid var(--card-border);
+  padding: 14px 20px; border-radius: 12px; font-size: 14px;
+  transform: translateY(100px); opacity: 0; transition: all 0.3s;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+.toast.show { transform: none; opacity: 1; }
+.toast.success { border-color: var(--success); }
+.toast.error { border-color: var(--danger); }
+
+.empty { text-align: center; padding: 40px 20px; color: var(--text-dim); }
+.loading { text-align: center; padding: 40px; color: var(--text-dim); }
+.spinner {
+  width: 36px; height: 36px; border: 3px solid var(--card-border);
+  border-top-color: var(--primary); border-radius: 50%;
+  animation: spin 0.8s linear infinite; margin: 0 auto 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 600px) {
+  .header { flex-direction: column; align-items: flex-start; }
+  .stats { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">
+      <div class="logo-icon">🚀</div>
+      <div>
+        <h1>پنل مدیریت پروکسی</h1>
+        <p>VLESS & Trojan روی Supabase Edge</p>
+      </div>
+    </div>
+    <div class="status-badge"><div class="pulse"></div> سرویس فعال</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="dashboard">📊 داشبورد</button>
+    <button class="tab" data-tab="users">👥 کاربران</button>
+    <button class="tab" data-tab="protocols">🔌 پروتکل‌ها</button>
+    <button class="tab" data-tab="settings">⚙️ تنظیمات</button>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="tab-content active" id="tab-dashboard">
+    <div class="stats">
+      <div class="stat-card users"><div class="num" id="stat-users">–</div><div class="lbl">کاربران فعال</div></div>
+      <div class="stat-card vless"><div class="num" id="stat-vless">–</div><div class="lbl">VLESS</div></div>
+      <div class="stat-card trojan"><div class="num">–</div><div class="lbl" id="stat-trojan-lbl">Trojan</div></div>
+    </div>
+    <div class="card">
+      <h2>📡 لینک اشتراک کلی</h2>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:12px">این لینک همه کانفیگ‌های فعال رو داره — تو v2rayNG وارد کن:</p>
+      <div class="sub-box" id="global-sub">در حال بارگذاری...</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-ghost btn-sm" onclick="copyText('global-sub')">📋 کپی</button>
+        <button class="btn btn-ghost btn-sm" onclick="showQR('global-sub')">📱 QR کد</button>
+      </div>
+      <div class="qr-wrap" id="global-qr" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- Users -->
+  <div class="tab-content" id="tab-users">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2 style="margin:0">👥 کاربران</h2>
+        <button class="btn btn-primary btn-sm" onclick="openModal('add-user-modal')">+ کاربر جدید</button>
+      </div>
+      <div id="users-list"><div class="loading"><div class="spinner"></div>در حال بارگذاری...</div></div>
+    </div>
+  </div>
+
+  <!-- Protocols -->
+  <div class="tab-content" id="tab-protocols">
+    <div class="card">
+      <h2>🔌 پروتکل‌ها</h2>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:8px">
+        فقط پروتکل‌هایی که روی Edge Functions کار می‌کنن فعالن. MTProto و Shadowsocks نیاز به TCP خام دارن که Supabase نمی‌ده — معماریاً غیرممکنه.
+      </p>
+      <div id="protocols-list"></div>
+    </div>
+    <div class="card">
+      <h2>🧪 تست پروتکل‌ها</h2>
+      <div id="proto-test-results" style="font-size:13px;color:var(--text-dim)">برای تست هر پروتکل، دکمه تست رو بزن:</div>
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+        <button class="btn btn-ghost btn-sm" onclick="testProto('vless')">تست VLESS</button>
+        <button class="btn btn-ghost btn-sm" onclick="testProto('trojan')">تست Trojan</button>
+        <button class="btn btn-ghost btn-sm" onclick="testProto('xhttp')">تست XHTTP</button>
+        <button class="btn btn-ghost btn-sm" onclick="testProto('ws')">تست WebSocket</button>
+        <button class="btn btn-ghost btn-sm" onclick="testProto('http')">تست HTTP</button>
+        <button class="btn btn-ghost btn-sm" onclick="testProto('udp')">تست UDP</button>
+        <button class="btn btn-ghost btn-sm" onclick="testProto('mtproto')">تست MTProto</button>
+        <button class="btn btn-ghost btn-sm" onclick="testProto('httpupgrade')">تست HTTPUpgrade</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings -->
+  <div class="tab-content" id="tab-settings">
+    <div class="card">
+      <h2>⚙️ تنظیمات پنل</h2>
+      <div class="form-group">
+        <label>پسورد پنل</label>
+        <input type="password" id="setting-password" placeholder="پسورد جدید (خالی = بدون تغییر)">
+      </div>
+      <button class="btn btn-primary" onclick="saveSettings()">💾 ذخیره</button>
+    </div>
+    <div class="card">
+      <h2>ℹ️ اطلاعات سرور</h2>
+      <div id="server-info" style="font-size:13px;color:var(--text-dim);line-height:2"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Add User Modal -->
+<div class="modal" id="add-user-modal">
+  <div class="modal-box">
+    <h3>کاربر جدید</h3>
+    <div class="form-group">
+      <label>نام</label>
+      <input type="text" id="new-user-name" placeholder="مثلاً: گوشی آوا">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="createUser()">ایجاد</button>
+      <button class="btn btn-ghost" onclick="closeModal('add-user-modal')">انصراف</button>
+    </div>
+  </div>
+</div>
+
+<!-- User Detail Modal -->
+<div class="modal" id="user-modal">
+  <div class="modal-box">
+    <h3 id="user-modal-title">کاربر</h3>
+    <div id="user-modal-body"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('user-modal')">بستن</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API = 'https://rdcnkkhqangukrgfehdj.supabase.co/functions/v1/proxy';  // Supabase Edge API
+const urlParams = new URLSearchParams(location.search);
+const PASSWORD = urlParams.get('password') || '';
+function api(path, opts = {}) {
+  const sep = path.includes('?') ? '&' : '?';
+  return fetch(API + path + sep + 'password=' + encodeURIComponent(PASSWORD), opts);
+}
+function toast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show ' + type;
+  setTimeout(() => t.className = 'toast', 2500);
+}
+function copyText(id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent).then(() => toast('کپی شد!'));
+}
+function showQR(id) {
+  const text = document.getElementById(id).textContent.trim();
+  const wrapId = id === 'global-sub' ? 'global-qr' : 'user-qr';
+  const wrap = document.getElementById(wrapId);
+  if (!wrap) return;
+  const sub = id === 'global-sub' ? text : btoa(text);
+  wrap.innerHTML = '<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(id === 'global-sub' ? atob(text.trim()) : text) + '" alt="QR">';
+  wrap.style.display = wrap.style.display === 'none' ? 'block' : 'none';
+}
+
+// Tabs
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+  document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+}));
+
+// Modal
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal').forEach(m => m.addEventListener('click', e => {
+  if (e.target === m) m.classList.remove('open');
+}));
+
+// Load dashboard
+async function loadDashboard() {
+  try {
+    const [usersRes, settingsRes] = await Promise.all([api('/api/users').then(r => r.json()), api('/api/settings').then(r => r.json())]);
+    const users = usersRes.users || [];
+    const active = users.filter(u => u.enabled);
+    document.getElementById('stat-users').textContent = active.length;
+    const s = {};
+    (settingsRes.settings || []).forEach(x => s[x.key] = x.value);
+    document.getElementById('stat-vless').textContent = s.vless_enabled === 'true' ? 'فعال' : 'غیرفعال';
+    document.getElementById('stat-trojan-lbl').textContent = 'Trojan (' + (s.trojan_enabled === 'true' ? 'فعال' : 'غیرفعال') + ')';
+    // Global sub = first active user's sub
+    if (active.length > 0) {
+      const subRes = await api('/api/sub/' + active[0].id).then(r => r.json());
+      document.getElementById('global-sub').textContent = subRes.subscription || 'خطا';
+    } else {
+      document.getElementById('global-sub').textContent = 'کاربری وجود ندارد';
+    }
+  } catch (e) { toast('خطا در بارگذاری', 'error'); }
+}
+
+// Load users
+async function loadUsers() {
+  const list = document.getElementById('users-list');
+  try {
+    const res = await api('/api/users').then(r => r.json());
+    const users = res.users || [];
+    if (!users.length) { list.innerHTML = '<div class="empty">کاربری وجود ندارد</div>'; return; }
+    list.innerHTML = users.map(u => `
+      <div class="user-row">
+        <div class="user-info">
+          <div class="avatar">${(u.name || '?')[0]}</div>
+          <div>
+            <div class="name">${esc(u.name)}</div>
+            <div class="meta">${u.uuid.slice(0, 8)}...</div>
+          </div>
+          <span class="badge ${u.enabled ? 'on' : 'off'}">${u.enabled ? 'فعال' : 'غیرفعال'}</span>
+        </div>
+        <div class="user-actions">
+          <button class="btn btn-ghost btn-sm" onclick="showUser('${u.id}')">📡 کانفیگ</button>
+          <button class="btn btn-ghost btn-sm" onclick="toggleUser('${u.id}', ${!u.enabled})">${u.enabled ? '⏸ غیرفعال' : '▶ فعال'}</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteUser('${u.id}')">🗑</button>
+        </div>
+      </div>`).join('');
+  } catch (e) { list.innerHTML = '<div class="empty">خطا در بارگذاری</div>'; }
+}
+function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+async function createUser() {
+  const name = document.getElementById('new-user-name').value.trim();
+  if (!name) { toast('نام رو وارد کن', 'error'); return; }
+  const res = await api('/api/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name }) }).then(r => r.json());
+  if (res.user) { toast('کاربر ساخته شد!'); closeModal('add-user-modal'); document.getElementById('new-user-name').value = ''; loadUsers(); loadDashboard(); }
+  else toast('خطا', 'error');
+}
+async function toggleUser(id, enabled) {
+  await api('/api/users/' + id, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ enabled }) });
+  toast(enabled ? 'فعال شد' : 'غیرفعال شد'); loadUsers(); loadDashboard();
+}
+async function deleteUser(id) {
+  if (!confirm('مطمئنی حذف بشه؟')) return;
+  await api('/api/users/' + id, { method: 'DELETE' });
+  toast('حذف شد'); loadUsers(); loadDashboard();
+}
+async function showUser(id) {
+  const res = await api('/api/sub/' + id).then(r => r.json());
+  document.getElementById('user-modal-title').textContent = 'کانفیگ کاربر';
+  const link = res.links ? res.links[0] : '';
+  document.getElementById('user-modal-body').innerHTML = `
+    <div class="form-group"><label>VLESS لینک</label><div class="sub-box" id="user-link">${esc(link)}</div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-ghost btn-sm" onclick="copyText('user-link')">📋 کپی لینک</button>
+      <button class="btn btn-ghost btn-sm" onclick="showQR('user-link')">📱 QR</button>
+    </div>
+    <div class="qr-wrap" id="user-qr" style="display:none"></div>
+    <div class="form-group" style="margin-top:16px"><label>Subscription (base64)</label><div class="sub-box" id="user-sub">${esc(res.subscription || '')}</div></div>
+    <button class="btn btn-ghost btn-sm" onclick="copyText('user-sub')">📋 کپی ساب</button>`;
+  openModal('user-modal');
+}
+
+// Protocols
+const PROTO_INFO = [
+  { key: 'vless', name: 'VLESS', desc: 'مدرن، سبک، امن — روی WebSocket', works: true },
+  { key: 'trojan', name: 'Trojan', desc: 'شبیه HTTPS، مقاوم در برابر شناسایی', works: true },
+  { key: 'xhttp', name: 'XHTTP', desc: 'ترنسپورت HTTP خالص — ضد اختلال آپلود', works: true },
+  { key: 'vmess', name: 'VMess', desc: 'قدیمی‌تر، سنگین‌تر از VLESS', works: false },
+  { key: 'httpupgrade', name: 'HTTPUpgrade', desc: 'نیاز به hijack کانکشن — روی Edge نمیشه ❌', works: false },
+  { key: 'ss', name: 'Shadowsocks', desc: 'نیاز به TCP خام — روی Edge کار نمی‌کنه ❌', works: false },
+  { key: 'mtproto', name: 'MTProto', desc: 'پروتکل تلگرام — نیاز به TCP خام ❌', works: false },
+  { key: 'udp', name: 'UDP', desc: 'سوکت UDP در Edge Functions وجود نداره ❌', works: false },
+  { key: 'wireguard', name: 'WireGuard', desc: 'نیاز به UDP — روی Edge کار نمی‌کنه ❌', works: false },
+];
+async function loadProtocols() {
+  const settingsRes = await api('/api/settings').then(r => r.json());
+  const s = {}; (settingsRes.settings || []).forEach(x => s[x.key] = x.value);
+  document.getElementById('protocols-list').innerHTML = PROTO_INFO.map(p => {
+    const enabled = s[p.key + '_enabled'] === 'true';
+    const toggle = p.works
+      ? `<label class="switch"><input type="checkbox" ${enabled ? 'checked' : ''} onchange="toggleProto('${p.key}', this.checked)"><span class="slider"></span></label>`
+      : `<span class="badge off">پشتیبانی نمیشه</span>`;
+    return `<div class="toggle-row"><div class="toggle-info"><div class="t-name">${p.name}</div><div class="t-desc">${p.desc}</div></div>${toggle}</div>`;
+  }).join('');
+}
+async function toggleProto(key, enabled) {
+  await api('/api/settings', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key: key + '_enabled', value: String(enabled) }) });
+  toast(key + (enabled ? ' فعال شد' : ' غیرفعال شد')); loadDashboard();
+}
+async function testProto(p) {
+  const box = document.getElementById('proto-test-results');
+  box.innerHTML = '⏳ در حال تست ' + p + '...';
+  try {
+    const res = await api('/api/test/' + p).then(r => r.json());
+    box.innerHTML = (res.ok ? '✅ ' : '❌ ') + p + ': ' + esc(res.message || '');
+  } catch (e) { box.innerHTML = '❌ خطا در تست'; }
+}
+
+// Settings
+async function saveSettings() {
+  const pw = document.getElementById('server-info');
+  const newPw = document.getElementById('setting-password').value;
+  if (newPw) {
+    // Note: changing panel password requires redeploy env var — show info
+    toast('تغییر پسورد نیاز به تنظیم دستی داره', 'error');
+  } else toast('ذخیره شد');
+}
+async function loadServerInfo() {
+  const res = await api('/api/info').then(r => r.json()).catch(() => ({}));
+  document.getElementById('server-info').innerHTML =
+    '🌐 هاست: ' + esc(res.host || '-') + '<br>📦 پلتفرم: Supabase Edge Functions<br>🗄 دیتابیس: Postgres (panel_users, panel_settings)';
+}
+
+// Init
+loadDashboard(); loadUsers(); loadProtocols(); loadServerInfo();
+</script>
+</body>
+</html>
