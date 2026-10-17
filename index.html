@@ -248,10 +248,11 @@ tbody tr:hover td { background: rgba(255,255,255,0.022); }
 /* ============ FORMS ============ */
 .fgroup { margin-bottom: 17px; }
 .fgroup label { display: block; font-size: 12.5px; color: var(--text-dim); margin-bottom: 7px; font-weight: 600; }
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"], input[type="number"], input[type="date"] {
   width: 100%; padding: 12px 15px; border-radius: 11px;
   background: rgba(0,0,0,0.32); border: 1px solid rgba(255,255,255,0.09);
   color: var(--text); font-family: inherit; font-size: 13.5px; transition: all 0.15s;
+  color-scheme: dark;
 }
 input:focus { outline: none; border-color: rgba(109,94,240,0.6); box-shadow: 0 0 0 3px rgba(109,94,240,0.14); }
 .subbox {
@@ -392,8 +393,8 @@ input:focus { outline: none; border-color: rgba(109,94,240,0.6); box-shadow: 0 0
         <div class="panel-b">
           <div class="tbl-bar"><input class="tbl-search" id="user-search" placeholder="جستجوی کاربران..." oninput="renderUsers()"></div>
           <div style="overflow-x:auto"><table>
-            <thead><tr><th>کاربر</th><th>UUID</th><th>وضعیت</th><th>عملیات</th></tr></thead>
-            <tbody id="users-tbody"><tr><td colspan="4"><div class="loading"><div class="spin"></div>در حال بارگذاری...</div></td></tr></tbody>
+            <thead><tr><th>کاربر</th><th>حجم مصرفی</th><th>انقضا</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+            <tbody id="users-tbody"><tr><td colspan="5"><div class="loading"><div class="spin"></div>در حال بارگذاری...</div></td></tr></tbody>
           </table></div>
         </div>
       </div>
@@ -444,7 +445,23 @@ input:focus { outline: none; border-color: rgba(109,94,240,0.6); box-shadow: 0 0
 <div class="modal" id="add-user-modal"><div class="mbox">
   <h3>کاربر جدید</h3>
   <div class="fgroup"><label>نام</label><input type="text" id="new-user-name" placeholder="مثلاً: گوشی آوا"></div>
+  <div class="fgroup"><label>سقف حجم (گیگابایت — خالی = نامحدود)</label><input type="text" id="new-user-limit" inputmode="decimal" placeholder="مثلاً 50"></div>
+  <div class="fgroup"><label>تاریخ انقضا (خالی = بدون انقضا)</label><input type="date" id="new-user-exp"></div>
   <div class="macts"><button class="btn btn-p" onclick="createUser()">ایجاد</button><button class="btn btn-g" onclick="closeModal('add-user-modal')">انصراف</button></div>
+</div></div>
+
+<div class="modal" id="edit-user-modal"><div class="mbox">
+  <h3>ویرایش کاربر</h3>
+  <div class="fgroup"><label>نام</label><input type="text" id="edit-user-name"></div>
+  <div class="fgroup"><label>سقف حجم (گیگابایت — خالی = نامحدود)</label><input type="text" id="edit-user-limit" inputmode="decimal" placeholder="مثلاً 50"></div>
+  <div class="fgroup"><label>تاریخ انقضا (خالی = بدون انقضا)</label><input type="date" id="edit-user-exp"></div>
+  <div class="kv" id="edit-user-usage" style="margin-bottom:6px"></div>
+  <div class="macts" style="flex-wrap:wrap">
+    <button class="btn btn-p" onclick="saveUserEdit()">ذخیره</button>
+    <button class="btn btn-g" onclick="resetUsage()">ریست مصرف</button>
+    <button class="btn btn-g" onclick="regenUuid()">UUID جدید</button>
+    <button class="btn btn-g" onclick="closeModal('edit-user-modal')">انصراف</button>
+  </div>
 </div></div>
 
 <div class="modal" id="user-modal"><div class="mbox">
@@ -566,11 +583,16 @@ async function loadDashboard() {
     ]);
     const users = usersRes.users || [];
     ALL_USERS = users;
-    const active = users.filter(u => u.enabled);
+    const active = users.filter(isActive);
+    const expired = users.filter(u => { const dl = daysLeft(u.expires_at); return u.enabled && dl !== null && dl < 0; }).length;
+    const noQuota = users.filter(u => u.enabled && u.data_limit != null && usedBytes(u) >= Number(u.data_limit)).length;
     const s = {};
     (settingsRes.settings || []).forEach(x => s[x.key] = x.value);
     document.getElementById('stat-users').textContent = active.length;
-    document.getElementById('stat-users-hint').textContent = users.length + ' کاربر کل';
+    let hint = users.length + ' کاربر کل';
+    if (expired > 0) hint += ' · ' + expired + ' منقضی';
+    if (noQuota > 0) hint += ' · ' + noQuota + ' بدون حجم';
+    document.getElementById('stat-users-hint').textContent = hint;
     document.getElementById('stat-users-bar').style.width = Math.min(100, users.length * 25) + '%';
     const vOn = s.vless_enabled !== 'false', tOn = s.trojan_enabled === 'true', xOn = s.xhttp_enabled !== 'false';
     document.getElementById('stat-vless').textContent = vOn ? 'فعال' : 'غیرفعال';
@@ -589,18 +611,69 @@ async function loadDashboard() {
 }
 
 // Users
+const GB = 1073741824;
+function fmtBytes(b) {
+  b = Number(b || 0);
+  if (b < 1024) return b + ' B';
+  const u = ['KB', 'MB', 'GB', 'TB'];
+  let i = -1;
+  do { b /= 1024; i++; } while (b >= 1024 && i < u.length - 1);
+  return (b >= 100 ? Math.round(b) : b.toFixed(1)) + ' ' + u[i];
+}
+function usedBytes(u) { return Number(u.total_up || 0) + Number(u.total_down || 0); }
+function daysLeft(exp) {
+  if (!exp) return null;
+  return Math.ceil((new Date(exp).getTime() - Date.now()) / 86400000);
+}
+function fmtDateFa(d) {
+  if (!d) return '—';
+  try { return new Date(d).toLocaleDateString('fa-IR'); } catch { return d.slice(0, 10); }
+}
+function isActive(u) {
+  if (!u || !u.enabled) return false;
+  const dl = daysLeft(u.expires_at);
+  if (dl !== null && dl < 0) return false;
+  if (u.data_limit != null && usedBytes(u) >= Number(u.data_limit)) return false;
+  return true;
+}
+function statusPill(u) {
+  const dl = daysLeft(u.expires_at);
+  if (!u.enabled) return '<span class="pill off">غیرفعال</span>';
+  if (dl !== null && dl < 0) return '<span class="pill off">منقضی شده</span>';
+  if (u.data_limit != null && usedBytes(u) >= Number(u.data_limit)) return '<span class="pill warn">حجم تمام شد</span>';
+  return '<span class="pill on">فعال</span>';
+}
+function volCell(u) {
+  const used = usedBytes(u);
+  if (u.data_limit == null) return '<div class="mono" style="font-size:12px">' + fmtBytes(used) + '</div><small style="color:var(--text-faint)">نامحدود</small>';
+  const lim = Number(u.data_limit);
+  const pct = lim > 0 ? Math.min(100, used / lim * 100) : 0;
+  const col = pct >= 100 ? 'var(--danger)' : pct >= 80 ? 'var(--warning)' : 'var(--success)';
+  return '<div class="mono" style="font-size:12px">' + fmtBytes(used) + ' <span style="color:var(--text-faint)">/ ' + fmtBytes(lim) + '</span></div>' +
+    '<div style="height:4px;border-radius:99px;background:rgba(255,255,255,0.07);margin-top:6px;min-width:90px"><div style="height:100%;width:' + pct + '%;border-radius:99px;background:' + col + '"></div></div>';
+}
+function expCell(u) {
+  const dl = daysLeft(u.expires_at);
+  if (dl === null) return '<span style="color:var(--text-faint)">بدون انقضا</span>';
+  if (dl < 0) return '<span class="pill off">منقضی شده</span>';
+  const d = '<div style="font-size:12.5px;margin-bottom:4px">' + fmtDateFa(u.expires_at) + '</div>';
+  if (dl === 0) return d + '<span class="pill warn">امروز تموم میشه</span>';
+  return d + '<span class="pill ' + (dl <= 7 ? 'warn' : 'info') + '">' + dl + ' روز مانده</span>';
+}
 function renderUsers() {
   const q = (document.getElementById('user-search').value || '').toLowerCase();
   const users = ALL_USERS.filter(u => !q || (u.name || '').toLowerCase().includes(q));
   const tb = document.getElementById('users-tbody');
-  if (!users.length) { tb.innerHTML = '<tr><td colspan="4"><div class="empty">کاربری وجود ندارد</div></td></tr>'; return; }
+  if (!users.length) { tb.innerHTML = '<tr><td colspan="5"><div class="empty">کاربری وجود ندارد</div></td></tr>'; return; }
   tb.innerHTML = users.map(u => `
     <tr>
-      <td><div class="urow"><div class="uav">${esc((u.name || '?')[0])}</div><b>${esc(u.name)}</b></div></td>
-      <td class="mono">${esc(u.uuid.slice(0, 13))}...</td>
-      <td><span class="pill ${u.enabled ? 'on' : 'off'}">${u.enabled ? 'فعال' : 'غیرفعال'}</span></td>
+      <td><div class="urow"><div class="uav">${esc((u.name || '?')[0])}</div><div><b>${esc(u.name)}</b><div class="mono" style="font-size:10.5px;margin-top:2px">${esc(u.uuid.slice(0, 13))}...</div></div></div></td>
+      <td>${volCell(u)}</td>
+      <td>${expCell(u)}</td>
+      <td>${statusPill(u)}</td>
       <td><div class="acts">
         <button class="btn btn-g btn-s" onclick="showUser('${u.id}')">کانفیگ</button>
+        <button class="btn btn-g btn-s btn-ic" onclick="editUser('${u.id}')" title="ویرایش"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg></button>
         <button class="btn btn-g btn-s btn-ic" onclick="toggleUser('${u.id}', ${!u.enabled})" title="${u.enabled ? 'غیرفعال' : 'فعال'}">${u.enabled
           ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>'
           : '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'}</button>
@@ -608,12 +681,51 @@ function renderUsers() {
       </div></td>
     </tr>`).join('');
 }
+function gbToBytes(v) {
+  v = (v || '').trim().replace('٫', '.').replace('٬', '');
+  if (v === '') return null;
+  const n = parseFloat(v);
+  if (isNaN(n) || n < 0) return null;
+  return Math.round(n * GB);
+}
 async function createUser() {
   const name = document.getElementById('new-user-name').value.trim();
   if (!name) { toast('نام رو وارد کن', 'err'); return; }
-  const res = await api('/api/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name }) }).then(r => r.json());
-  if (res.user) { toast('کاربر ساخته شد'); closeModal('add-user-modal'); document.getElementById('new-user-name').value = ''; loadDashboard(); }
+  const body = { name, data_limit: gbToBytes(document.getElementById('new-user-limit').value) };
+  const exp = document.getElementById('new-user-exp').value;
+  if (exp) body.expires_at = new Date(exp + 'T00:00:00').toISOString();
+  const res = await api('/api/users', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json());
+  if (res.user) { toast('کاربر ساخته شد'); closeModal('add-user-modal'); document.getElementById('new-user-name').value = ''; document.getElementById('new-user-limit').value = ''; document.getElementById('new-user-exp').value = ''; loadDashboard(); }
   else toast('خطا', 'err');
+}
+let EDIT_ID = null;
+function editUser(id) {
+  const u = ALL_USERS.find(x => x.id === id);
+  if (!u) return;
+  EDIT_ID = id;
+  document.getElementById('edit-user-name').value = u.name || '';
+  document.getElementById('edit-user-limit').value = u.data_limit != null ? (Number(u.data_limit) / GB).toString() : '';
+  document.getElementById('edit-user-exp').value = u.expires_at ? u.expires_at.slice(0, 10) : '';
+  document.getElementById('edit-user-usage').innerHTML = '<b>مصرف:</b> ' + fmtBytes(usedBytes(u)) + (u.data_limit != null ? ' از ' + fmtBytes(u.data_limit) : ' (نامحدود)');
+  openModal('edit-user-modal');
+}
+async function saveUserEdit() {
+  if (!EDIT_ID) return;
+  const body = { name: document.getElementById('edit-user-name').value.trim() || 'کاربر', data_limit: gbToBytes(document.getElementById('edit-user-limit').value) };
+  const exp = document.getElementById('edit-user-exp').value;
+  body.expires_at = exp ? new Date(exp + 'T00:00:00').toISOString() : null;
+  await api('/api/users/' + EDIT_ID, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  toast('ذخیره شد'); closeModal('edit-user-modal'); EDIT_ID = null; loadDashboard();
+}
+async function resetUsage() {
+  if (!EDIT_ID || !confirm('مصرف این کاربر صفر بشه؟')) return;
+  await api('/api/users/' + EDIT_ID + '/reset', { method: 'POST' });
+  toast('مصرف ریست شد'); closeModal('edit-user-modal'); EDIT_ID = null; loadDashboard();
+}
+async function regenUuid() {
+  if (!EDIT_ID || !confirm('UUID جدید ساخته بشه؟ (کانفیگ‌های قبلی از کار می‌افتن)')) return;
+  await api('/api/users/' + EDIT_ID + '/regenerate', { method: 'POST' });
+  toast('UUID جدید ساخته شد'); closeModal('edit-user-modal'); EDIT_ID = null; loadDashboard();
 }
 async function toggleUser(id, enabled) {
   await api('/api/users/' + id, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ enabled }) });
