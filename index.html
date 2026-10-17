@@ -32,20 +32,38 @@ body {
 }
 body::after {
   content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background: linear-gradient(180deg, rgba(3,3,9,0.42) 0%, rgba(3,3,9,0.68) 100%);
+  background: linear-gradient(180deg, rgba(3,3,9,0.18) 0%, rgba(3,3,9,0.38) 100%);
 }
 svg { vertical-align: -3px; flex-shrink: 0; }
+/* ===== FLOATING STAGE: panels float over the cosmos like the reference ===== */
+.stage {
+  position: relative; z-index: 1;
+  min-height: 100vh; display: flex; align-items: flex-start; justify-content: center;
+  padding: 44px 28px 70px;
+  perspective: 2200px;
+}
+.window {
+  width: 100%; max-width: 1180px;
+  display: flex; min-height: 640px; overflow: hidden;
+  background: rgba(8, 8, 17, 0.78);
+  border: 1px solid rgba(140, 130, 255, 0.16);
+  border-radius: 22px;
+  backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+  box-shadow: 0 0 80px rgba(80, 60, 220, 0.22), 0 40px 100px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08);
+  transform: rotateX(1.2deg);
+  animation: floatIn 0.7s ease;
+}
+@keyframes floatIn { from { opacity: 0; transform: rotateX(4deg) translateY(26px); } to { opacity: 1; transform: rotateX(1.2deg); } }
 .app { position: relative; z-index: 1; display: flex; min-height: 100vh; }
 
 /* ============ SIDEBAR ============ */
 .sidebar {
-  width: 232px; flex-shrink: 0; position: sticky; top: 0; height: 100vh;
-  background: rgba(7, 7, 15, 0.88);
-  backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
-  border-left: 1px solid var(--panel-border);
-  box-shadow: 20px 0 60px rgba(0,0,0,0.4);
+  width: 232px; flex-shrink: 0;
+  background: rgba(5, 5, 12, 0.6);
+  border-left: 1px solid rgba(140, 130, 255, 0.1);
   padding: 22px 14px; display: flex; flex-direction: column; gap: 4px;
 }
+.wmain { flex: 1; min-width: 0; padding: 26px 30px 40px; overflow-y: auto; max-height: calc(100vh - 120px); }
 .brand { display: flex; align-items: center; gap: 10px; padding: 2px 10px 18px; }
 .brand-mark {
   width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0;
@@ -77,7 +95,6 @@ svg { vertical-align: -3px; flex-shrink: 0; }
 .proj small { color: var(--text-faint); display: block; font-size: 10.5px; margin-top: 1px; }
 
 /* ============ MAIN ============ */
-.main { flex: 1; min-width: 0; padding: 26px 30px 70px; max-width: 1180px; }
 .topbar { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; }
 .searchbar {
   flex: 1; max-width: 400px; display: flex; align-items: center; gap: 10px;
@@ -282,7 +299,9 @@ input:focus { outline: none; border-color: rgba(109,94,240,0.6); box-shadow: 0 0
   .sidebar { position: fixed; right: 0; top: 0; z-index: 90; transform: translateX(100%); transition: transform 0.28s; }
   .sidebar.open { transform: none; }
   .menu-btn { display: inline-flex; }
-  .main { padding: 18px 14px 60px; }
+  .wmain { padding: 18px 14px 40px; }
+  .stage { padding: 16px 10px 40px; }
+  .window { transform: none; border-radius: 18px; }
   .dash-grid { grid-template-columns: 1fr; }
   .scrim { display: none; position: fixed; inset: 0; z-index: 80; background: rgba(0,0,0,0.55); }
   .scrim.on { display: block; }
@@ -290,7 +309,8 @@ input:focus { outline: none; border-color: rgba(109,94,240,0.6); box-shadow: 0 0
 </style>
 </head>
 <body>
-<div class="app">
+<div class="stage">
+<div class="window">
   <aside class="sidebar" id="sidebar">
     <div class="brand">
       <div class="brand-mark"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c3.5 0 6.5 2.5 7.5 6 .3 1.1.5 2.3.5 3.5 0 1.5-.5 3-1.5 4l-2.5 3c-.6.7-1.6.7-2.2 0L11 15.5H8.5c-1 0-2-.5-2.5-1.5L4 10c-.3-.6 0-1.4.6-1.7C7 7 9.5 2 12 2z"/><circle cx="12" cy="9" r="2" fill="#0a0a14"/></svg></div>
@@ -306,7 +326,7 @@ input:focus { outline: none; border-color: rgba(109,94,240,0.6); box-shadow: 0 0
   </aside>
   <div class="scrim" id="scrim"></div>
 
-  <div class="main">
+  <div class="wmain">
     <div class="topbar">
       <button class="ticon menu-btn" id="menuBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
       <div class="searchbar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><span>جستجو...</span></div>
@@ -417,8 +437,9 @@ input:focus { outline: none; border-color: rgba(109,94,240,0.6); box-shadow: 0 0
         <div class="panel-b"><div class="kv" id="server-info">در حال بارگذاری...</div></div>
       </div>
     </div>
-  </div>
-</div>
+  </div><!-- /wmain -->
+</div><!-- /window -->
+</div><!-- /stage -->
 
 <div class="modal" id="add-user-modal"><div class="mbox">
   <h3>کاربر جدید</h3>
