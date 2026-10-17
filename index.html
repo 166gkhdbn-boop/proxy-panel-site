@@ -39,31 +39,31 @@ svg { vertical-align: -3px; flex-shrink: 0; }
 .stage {
   position: relative; z-index: 1;
   min-height: 100vh; display: flex; align-items: flex-start; justify-content: center;
-  padding: 44px 28px 70px;
+  padding: 52px 40px 90px;
   perspective: 2200px;
 }
 .window {
-  width: 100%; max-width: 1180px;
-  display: flex; min-height: 640px; overflow: hidden;
-  background: rgba(8, 8, 17, 0.78);
-  border: 1px solid rgba(140, 130, 255, 0.16);
-  border-radius: 22px;
+  width: 100%; max-width: 1020px;
+  display: flex; min-height: 620px; overflow: hidden;
+  background: rgba(8, 8, 17, 0.72);
+  border: 1px solid rgba(140, 130, 255, 0.2);
+  border-radius: 24px;
   backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-  box-shadow: 0 0 80px rgba(80, 60, 220, 0.22), 0 40px 100px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08);
-  transform: rotateX(1.2deg);
+  box-shadow: 0 0 100px rgba(80, 60, 220, 0.3), 0 40px 100px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.09);
+  transform: rotateX(1.5deg);
   animation: floatIn 0.7s ease;
 }
-@keyframes floatIn { from { opacity: 0; transform: rotateX(4deg) translateY(26px); } to { opacity: 1; transform: rotateX(1.2deg); } }
+@keyframes floatIn { from { opacity: 0; transform: rotateX(5deg) translateY(30px); } to { opacity: 1; transform: rotateX(1.5deg); } }
 .app { position: relative; z-index: 1; display: flex; min-height: 100vh; }
 
 /* ============ SIDEBAR ============ */
 .sidebar {
-  width: 232px; flex-shrink: 0;
-  background: rgba(5, 5, 12, 0.6);
-  border-left: 1px solid rgba(140, 130, 255, 0.1);
+  width: 218px; flex-shrink: 0;
+  background: rgba(255,255,255,0.02);
+  border-left: 1px solid rgba(140, 130, 255, 0.09);
   padding: 22px 14px; display: flex; flex-direction: column; gap: 4px;
 }
-.wmain { flex: 1; min-width: 0; padding: 26px 30px 40px; overflow-y: auto; max-height: calc(100vh - 120px); }
+.wmain { flex: 1; min-width: 0; padding: 24px 26px 36px; overflow-y: auto; max-height: calc(100vh - 140px); }
 .brand { display: flex; align-items: center; gap: 10px; padding: 2px 10px 18px; }
 .brand-mark {
   width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0;
